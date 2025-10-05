@@ -69,6 +69,10 @@
             background: rgba(255,255,255,0.3);
         }
         a-scene { width: 100vw; height: 100vh; }
+        
+        .clickable {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -78,13 +82,13 @@
         
         <!-- Markers -->
         
-        <a-entity class="vr-marker clickable" 
-            data-marker='{"id":"17596236991398i39af1w7","type":"info","x":78.65853658536585,"y":58.033854166666664,"phi":283.1707317073171,"theta":14.4609375,"is3D":true,"title":"Marker 1","description":"fdgfdgdfg","url":"","mediaUrl":"","color":"#6366f1","opacity":0.8,"createdAt":"2025-10-05T00:21:39.140Z"}'
-            position="0.284 4.842 -1.216"
+        <a-entity class="vr-marker" 
+            data-marker='{"id":"1759629132807xnuxfk7mp","type":"info","x":74.39024390243902,"y":44.8671875,"phi":267.8048780487805,"theta":-9.239062500000003,"is3D":true,"title":"Marker 1","description":"","url":"","mediaUrl":"","color":"#6366f1","opacity":0.8,"createdAt":"2025-10-05T01:52:12.807Z"}'
+            position="-4.932 -0.803 0.189"
             look-at="#camera">
             
             <a-ring 
-                class="hotspot"
+                class="hotspot clickable"
                 radius-inner="0.2"
                 radius-outer="0.3"
                 color="#6366f1"
@@ -93,7 +97,7 @@
             </a-ring>
             
             <a-sphere
-                class="hotspot-core"
+                class="hotspot-core clickable"
                 radius="0.1"
                 color="#6366f1"
                 opacity="0.9"
@@ -102,76 +106,46 @@
             
             <a-text 
                 value="Marker 1" 
-                position="0 0.5 0" 
+                position="0 0.8 0" 
                 align="center" 
                 color="white"
-                scale="2 2 2">
+                scale="1.5 1.5 1.5">
             </a-text>
         </a-entity>
-        <a-entity class="vr-marker clickable" 
-            data-marker='{"id":"1759623705314hsvt8k2os","type":"info","x":20.121951219512198,"y":38.033854166666664,"phi":72.43902439024392,"theta":-21.5390625,"is3D":true,"title":"Marker 2","description":"","url":"","mediaUrl":"","color":"#f2648f","opacity":0.8,"createdAt":"2025-10-05T00:21:45.314Z"}'
-            position="-0.554 4.651 -1.750"
+        <a-entity class="vr-marker" 
+            data-marker='{"id":"17596291357282ypamvkqn","type":"info","x":44.207317073170735,"y":58.200520833333336,"phi":159.14634146341464,"theta":14.760937500000011,"is3D":true,"title":"Marker 2","description":"hgfdhgdf","url":"","mediaUrl":"","color":"#6366f1","opacity":0.8,"createdAt":"2025-10-05T01:52:15.728Z"}'
+            position="1.721 1.274 4.518"
             look-at="#camera">
             
             <a-ring 
-                class="hotspot"
+                class="hotspot clickable"
                 radius-inner="0.2"
                 radius-outer="0.3"
-                color="#f2648f"
+                color="#6366f1"
                 opacity="0.8"
                 animation="property: rotation; to: 0 0 360; dur: 4000; loop: true; easing: linear">
             </a-ring>
             
             <a-sphere
-                class="hotspot-core"
+                class="hotspot-core clickable"
                 radius="0.1"
-                color="#f2648f"
+                color="#6366f1"
                 opacity="0.9"
                 animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: easeInOutQuad; loop: true; dir: alternate">
             </a-sphere>
             
             <a-text 
                 value="Marker 2" 
-                position="0 0.5 0" 
+                position="0 0.8 0" 
                 align="center" 
                 color="white"
-                scale="2 2 2">
-            </a-text>
-        </a-entity>
-        <a-entity class="vr-marker clickable" 
-            data-marker='{"id":"1759623708835isr1s5yl3","type":"info","x":56.40243902439024,"y":58.36718749999999,"phi":203.04878048780486,"theta":15.060937499999994,"is3D":true,"title":"Marker 3","description":"bvzbvxcbvxcb","url":"","mediaUrl":"","color":"#f2648f","opacity":0.8,"createdAt":"2025-10-05T00:21:48.835Z"}'
-            position="-1.196 4.828 -0.509"
-            look-at="#camera">
-            
-            <a-ring 
-                class="hotspot"
-                radius-inner="0.2"
-                radius-outer="0.3"
-                color="#f2648f"
-                opacity="0.8"
-                animation="property: rotation; to: 0 0 360; dur: 4000; loop: true; easing: linear">
-            </a-ring>
-            
-            <a-sphere
-                class="hotspot-core"
-                radius="0.1"
-                color="#f2648f"
-                opacity="0.9"
-                animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: easeInOutQuad; loop: true; dir: alternate">
-            </a-sphere>
-            
-            <a-text 
-                value="Marker 3" 
-                position="0 0.5 0" 
-                align="center" 
-                color="white"
-                scale="2 2 2">
+                scale="1.5 1.5 1.5">
             </a-text>
         </a-entity>
         
-        <!-- Camera with improved cursor -->
+        <!-- Camera with proper cursor setup -->
         <a-entity id="camera" camera look-controls wasd-controls position="0 0 0">
-            <a-entity cursor="fuse: false; rayOrigin: mouse"
+            <a-entity cursor="rayOrigin: mouse; fuse: false"
                      raycaster="objects: .clickable; far: 100;"
                      position="0 0 -1"
                      geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
@@ -201,43 +175,27 @@
     </div>
 
     <script>
-        // Enhanced marker interaction setup
+        // Simple and reliable marker interaction setup
         function setupMarkerInteractions() {
             console.log('Setting up marker interactions...');
             
-            // Add click event listeners to all markers
-            document.querySelectorAll('.vr-marker').forEach(marker => {
-                // Remove any existing listeners and add new ones
-                marker.removeEventListener('click', handleMarkerClick);
-                marker.addEventListener('click', handleMarkerClick);
-                
-                // Add visual feedback on hover
-                marker.addEventListener('mouseenter', function() {
-                    const ring = this.querySelector('.hotspot');
-                    const sphere = this.querySelector('.hotspot-core');
-                    if (ring) ring.setAttribute('color', '#ffffff');
-                    if (sphere) sphere.setAttribute('scale', '1.8 1.8 1.8');
-                });
-                
-                marker.addEventListener('mouseleave', function() {
-                    const markerData = JSON.parse(this.getAttribute('data-marker'));
-                    const ring = this.querySelector('.hotspot');
-                    const sphere = this.querySelector('.hotspot-core');
-                    if (ring) ring.setAttribute('color', markerData.color);
-                    if (sphere) sphere.setAttribute('scale', '1 1 1');
-                });
+            // Use A-Frame's built-in click events
+            const scene = document.querySelector('a-scene');
+            
+            // Add event listener for all clicks in the scene
+            scene.addEventListener('click', function(event) {
+                const clickedElement = event.detail.intersection?.el;
+                if (clickedElement && clickedElement.classList.contains('clickable')) {
+                    const markerEntity = clickedElement.closest('.vr-marker');
+                    if (markerEntity) {
+                        const markerData = JSON.parse(markerEntity.getAttribute('data-marker'));
+                        console.log('Marker clicked:', markerData);
+                        showMarkerInfo(markerData);
+                    }
+                }
             });
 
             console.log('Marker interactions setup complete');
-        }
-
-        function handleMarkerClick(event) {
-            event.stopPropagation();
-            console.log('Marker clicked');
-            
-            const markerData = JSON.parse(event.currentTarget.getAttribute('data-marker'));
-            console.log('Marker data:', markerData);
-            showMarkerInfo(markerData);
         }
 
         function showMarkerInfo(marker) {
