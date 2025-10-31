@@ -6,7 +6,7 @@
     <title>360° VR Experience</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <!-- Add A-Frame extras for better interaction -->
-    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+    
     <style>
         body { 
             margin: 0; 
@@ -103,8 +103,8 @@
         <!-- Markers -->
         
         <a-entity class="vr-marker interactive-marker" 
-            data-marker='{&quot;id&quot;:&quot;1761855907116tnnlq4z2q&quot;,&quot;type&quot;:&quot;info&quot;,&quot;x&quot;:91.76829268292683,&quot;y&quot;:55.533854166666664,&quot;phi&quot;:330.36585365853654,&quot;theta&quot;:9.9609375,&quot;is3D&quot;:false,&quot;title&quot;:&quot;Marker 1&quot;,&quot;description&quot;:&quot;uydu jdf j&quot;,&quot;url&quot;:&quot;&quot;,&quot;mediaUrl&quot;:&quot;&quot;,&quot;color&quot;:&quot;#6366f1&quot;,&quot;opacity&quot;:0.8,&quot;createdAt&quot;:&quot;2025-10-30T20:25:07.116Z&quot;,&quot;position&quot;:&quot;-2.435 0.865 -4.280&quot;}'
-            position="-2.435 0.865 -4.280"
+            data-marker='{&quot;id&quot;:&quot;176188294961335wgrj0x6&quot;,&quot;type&quot;:&quot;info&quot;,&quot;x&quot;:91.3109756097561,&quot;y&quot;:52.8671875,&quot;phi&quot;:328.7195121951219,&quot;theta&quot;:5.160937500000003,&quot;is3D&quot;:false,&quot;title&quot;:&quot;Marker 1&quot;,&quot;description&quot;:&quot;fgdgfdgf&quot;,&quot;url&quot;:&quot;&quot;,&quot;mediaUrl&quot;:&quot;&quot;,&quot;color&quot;:&quot;#6366f1&quot;,&quot;opacity&quot;:0.8,&quot;createdAt&quot;:&quot;2025-10-31T03:55:49.613Z&quot;,&quot;position&quot;:&quot;-2.586 0.450 -4.256&quot;}'
+            position="-2.586 0.450 -4.256"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
             clickable>
             
@@ -130,37 +130,9 @@
                 width="2">
             </a-text>
         </a-entity>
-        <a-entity class="vr-marker interactive-marker" 
-            data-marker='{&quot;id&quot;:&quot;1761855913920grg9mfztn&quot;,&quot;type&quot;:&quot;info&quot;,&quot;x&quot;:41.920731707317074,&quot;y&quot;:52.20052083333333,&quot;phi&quot;:150.91463414634146,&quot;theta&quot;:3.9609375,&quot;is3D&quot;:false,&quot;title&quot;:&quot;Marker 2&quot;,&quot;description&quot;:&quot; jhdj jhdf djd jhdf jhd&quot;,&quot;url&quot;:&quot;&quot;,&quot;mediaUrl&quot;:&quot;&quot;,&quot;color&quot;:&quot;#6366f1&quot;,&quot;opacity&quot;:0.8,&quot;createdAt&quot;:&quot;2025-10-30T20:25:13.920Z&quot;,&quot;position&quot;:&quot;2.425 0.345 4.359&quot;}'
-            position="2.425 0.345 4.359"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
-            clickable>
-            
-            <a-ring radius-inner="0.2" radius-outer="0.3" color="#6366f1" opacity="0.8"></a-ring>
-            <a-sphere radius="0.15" color="#6366f1" opacity="0.9"></a-sphere>
-            <a-text value="i" align="center" color="white" position="0 0 0.16" scale="2 2 2"></a-text>
-            
-            <a-text 
-                value="Marker 2" 
-                position="0 0.8 0" 
-                align="center" 
-                color="white"
-                scale="1.5 1.5 1.5"
-                width="3">
-            </a-text>
-            
-            <a-text 
-                value="INFO" 
-                position="0 -0.5 0" 
-                align="center" 
-                color="#6366f1"
-                scale="1 1 1"
-                width="2">
-            </a-text>
-        </a-entity>
         
 // Camera Rig
-<a-entity id="rig" movement-controls position="0 0 0">
+<a-entity id="rig" position="0 0 0">
     <a-entity 
         id="camera" 
         camera 
@@ -234,229 +206,53 @@
         });
 
         function setupVRInteractions() {
-            const camera = document.querySelector('#camera');
-            const cursor = camera.querySelector('[cursor]');
+    const sceneEl = document.querySelector('a-scene');
+    const camera = document.querySelector('#camera');
+    
+    if (!camera) {
+        console.warn('Camera element not found');
+        return;
+    }
+
+    // Handle clicks on markers
+    sceneEl.addEventListener('click', function(evt) {
+        const intersectedEl = evt.detail.intersectedEl;
+        if (intersectedEl && intersectedEl.classList.contains('interactive-marker')) {
+            handleMarkerClick(intersectedEl);
             
-            if (!cursor) {
-                console.warn('Cursor element not found');
-                return;
-            }
-
-            // Handle mouse clicks
-            scene.addEventListener('click', function(evt) {
-                const intersectedEl = evt.detail.intersectedEl;
-                if (intersectedEl && intersectedEl.classList.contains('interactive-marker')) {
-                    handleMarkerClick(intersectedEl);
-                }
-            });
-
-            // Handle VR controller clicks
-            scene.addEventListener('triggerdown', function(evt) {
-                const intersectedEl = evt.detail.intersectedEl;
-                if (intersectedEl && intersectedEl.classList.contains('interactive-marker')) {
-                    handleMarkerClick(intersectedEl);
-                }
-            });
-
-            // Handle fuse events (gaze-based interaction)
-            cursor.addEventListener('fusing', function(evt) {
-                const intersectedEl = evt.detail.intersectedEl;
-                if (intersectedEl && intersectedEl.classList.contains('interactive-marker')) {
-                    // Visual feedback during fusing
-                    intersectedEl.setAttribute('animation', {
-                        property: 'scale',
-                        to: '1.2 1.2 1.2',
-                        dur: 500
-                    });
-                }
-            });
-
-            cursor.addEventListener('fusing', function(evt) {
-                const intersectedEl = evt.detail.intersectedEl;
-                if (intersectedEl && intersectedEl.classList.contains('interactive-marker')) {
-                    handleMarkerClick(intersectedEl);
-                }
-            });
-
-            // Add hover effects
-            scene.addEventListener('mouseenter', function(evt) {
-                const el = evt.detail.intersectedEl;
-                if (el && el.classList.contains('interactive-marker')) {
-                    el.setAttribute('animation', {
-                        property: 'scale',
-                        to: '1.1 1.1 1.1',
-                        dur: 200
-                    });
-                }
-            });
-
-            scene.addEventListener('mouseleave', function(evt) {
-                const el = evt.detail.intersectedEl;
-                if (el && el.classList.contains('interactive-marker')) {
-                    el.setAttribute('animation', {
-                        property: 'scale',
-                        to: '1 1 1',
-                        dur: 200
-                    });
-                }
+            // Add click feedback
+            intersectedEl.setAttribute('animation', {
+                property: 'scale',
+                from: '1.3 1.3 1.3',
+                to: '1 1 1',
+                dur: 300
             });
         }
+    });
 
-        function handleMarkerClick(markerElement) {
-            const markerData = markerElement.getAttribute('data-marker');
-            if (markerData) {
-                try {
-                    const marker = JSON.parse(markerData);
-                    showMarkerInfo(marker);
-                    
-                    // Add click feedback
-                    markerElement.setAttribute('animation', {
-                        property: 'scale',
-                        from: '1.3 1.3 1.3',
-                        to: '1 1 1',
-                        dur: 300
-                    });
-                } catch (e) {
-                    console.error('Error parsing marker data:', e);
-                }
-            }
-        }
-
-        function showMarkerInfo(marker) {
-            const panel = document.getElementById('infoPanel');
-            const title = document.getElementById('panelTitle');
-            const description = document.getElementById('panelDescription');
-            const linkElement = document.getElementById('panelLink');
-            const mediaElement = document.getElementById('panelMedia');
-            
-            if (!panel || !title) return;
-            
-            title.textContent = marker.title || 'Untitled Marker';
-            description.textContent = marker.description || 'No description provided.';
-            
-            // Handle link
-            if (marker.url && marker.url.trim() !== '') {
-                linkElement.href = marker.url;
-                linkElement.textContent = '🔗 Visit Link';
-                linkElement.style.display = 'inline-block';
-            } else {
-                linkElement.style.display = 'none';
-            }
-            
-            // Handle media
-            mediaElement.innerHTML = '';
-            if (marker.mediaUrl && marker.mediaUrl.trim() !== '') {
-                mediaElement.innerHTML = getMediaEmbed(marker.mediaUrl);
-            }
-            
-            panel.style.display = 'block';
-            
-            // Auto-hide controls info when panel is open
-            const controlsInfo = document.getElementById('controlsInfo');
-            if (controlsInfo) {
-                controlsInfo.style.display = 'none';
-            }
-        }
-
-        function closeInfoPanel() {
-            const panel = document.getElementById('infoPanel');
-            const controlsInfo = document.getElementById('controlsInfo');
-            
-            if (panel) {
-                panel.style.display = 'none';
-            }
-            if (controlsInfo) {
-                controlsInfo.style.display = 'block';
-            }
-        }
-
-        function getMediaEmbed(url) {
-            if (!url) return '';
-            
-            // YouTube
-            if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                const videoId = extractYouTubeId(url);
-                if (videoId) {
-                    return '<div style="margin-top: 10px;"><iframe width="100%" height="200" src="https://www.youtube.com/embed/' + videoId + '?rel=0&modestbranding=1" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe></div>';
-                }
-            }
-            
-            // Vimeo
-            if (url.includes('vimeo.com')) {
-                const videoId = extractVimeoId(url);
-                if (videoId) {
-                    return '<div style="margin-top: 10px;"><iframe width="100%" height="200" src="https://player.vimeo.com/video/' + videoId + '?title=0&byline=0&portrait=0" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe></div>';
-                }
-            }
-            
-            // Audio files
-            if (url.match(/\.(mp3|wav|ogg|m4a)(\?.*)?$/i)) {
-                return '<audio controls style="width: 100%; margin-top: 10px; border-radius: 8px;"><source src="' + url + '">Your browser does not support audio.</audio>';
-            }
-            
-            // Video files
-            if (url.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i)) {
-                return '<video controls style="width: 100%; max-width: 100%; margin-top: 10px; border-radius: 8px;"><source src="' + url + '">Your browser does not support video.</video>';
-            }
-            
-            // SoundCloud
-            if (url.includes('soundcloud.com')) {
-                return '<div style="background: #f8fafc; padding: 15px; border-radius: 8px; text-align: center; margin: 10px 0;">' +
-                       '<p style="margin-bottom: 10px; color: #666;">🎵 SoundCloud Audio</p>' +
-                       '<a href="' + url + '" target="_blank" rel="noopener" style="display: inline-block; padding: 10px 20px; background: #ff5500; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">' +
-                       'Listen on SoundCloud</a>' +
-                       '</div>';
-            }
-            
-            // Default link
-            return '<a href="' + url + '" target="_blank" rel="noopener" style="display: inline-block; padding: 10px 20px; background: #6366f1; color: white; text-decoration: none; border-radius: 6px; margin-top: 10px; font-weight: bold;">Open Media</a>';
-        }
-
-        function extractYouTubeId(url) {
-            const patterns = [
-                /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-                /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^&\n?#]+)/
-            ];
-            for (const pattern of patterns) {
-                const match = url.match(pattern);
-                if (match && match[1]) return match[1].split('?')[0].split('&')[0];
-            }
-            return null;
-        }
-
-        function extractVimeoId(url) {
-            const match = url.match(/(?:https?:\/\/)?(?:www\.)?vimeo\.com\/([0-9]+)/);
-            return match ? match[1] : null;
-        }
-
-        // Close panel when clicking outside
-        document.addEventListener('click', function(e) {
-            const panel = document.getElementById('infoPanel');
-            if (panel && panel.style.display === 'block' && !panel.contains(e.target)) {
-                closeInfoPanel();
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeInfoPanel();
-            }
-        });
-
-        // Handle mobile device detection
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        // Adjust controls based on device
-        if (isMobileDevice()) {
-            document.addEventListener('DOMContentLoaded', function() {
-                const controlsInfo = document.getElementById('controlsInfo');
-                if (controlsInfo) {
-                    controlsInfo.innerHTML = '<strong>Controls:</strong><br>• Touch and drag: Look around<br>• Virtual joystick: Move<br>• Tap markers: Interact';
-                }
+    // Add hover effects
+    sceneEl.addEventListener('mouseenter', function(evt) {
+        const el = evt.detail.intersectedEl;
+        if (el && el.classList.contains('interactive-marker')) {
+            el.setAttribute('animation', {
+                property: 'scale',
+                to: '1.1 1.1 1.1',
+                dur: 200
             });
         }
+    });
+
+    sceneEl.addEventListener('mouseleave', function(evt) {
+        const el = evt.detail.intersectedEl;
+        if (el && el.classList.contains('interactive-marker')) {
+            el.setAttribute('animation', {
+                property: 'scale',
+                to: '1 1 1',
+                dur: 200
+            });
+        }
+    });
+}
     </script>
 </body>
 </html>
